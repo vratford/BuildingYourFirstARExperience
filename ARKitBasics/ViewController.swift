@@ -36,6 +36,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 
         // Start the view's AR session with a configuration that uses the rear camera,
         // device position and orientation tracking, and plane detection.
+        
+        self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]  // debug option to display feature points
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = [.horizontal, .vertical]
         sceneView.session.run(configuration)
@@ -77,6 +79,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         // Make the plane visualization semitransparent to clearly show real-world placement.
         planeNode.opacity = 0.25
         
+        plane.width = CGFloat(planeAnchor.extent.x)
+        plane.height = CGFloat(planeAnchor.extent.z)
+        
+        
+        self.sceneView.debugOptions = []    // Turns off feature points when plane is found
+        
         // Add the plane visualization to the ARKit-managed node so that it tracks
         // changes in the plane anchor as plane estimation continues.
         node.addChildNode(planeNode)
@@ -96,6 +104,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         // Plane estimation may also extend planes, or remove one plane to merge its extent into another.
         plane.width = CGFloat(planeAnchor.extent.x)
         plane.height = CGFloat(planeAnchor.extent.z)
+            
+        
+        
     }
 
     // MARK: - ARSessionDelegate
